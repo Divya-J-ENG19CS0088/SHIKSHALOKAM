@@ -1,0 +1,188 @@
+ASSIGNMENT 1:
+
+Given a string s and a number x, print the shortest substrings which start and end with the same character and have lengths greater than or equal to x. If multiple substrings exist with the same shortest length, print them all.
+
+Eg:
+
+s: abccdbacca  
+x: 3		Answer: acca
+x: 4		Answer: acca
+x: 5		Answer: bccdb cdbac
+x: 6 		Answer:  abccdba
+x: 7		Answer: abccdba
+x: 8		Answer: not-found
+
+
+# Example usage
+s = "abccdbacca"
+x = 3
+print("x =", x)
+print_shortest_substrings(s, x)
+
+x = 4
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 5
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 6
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 7
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 8
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+****************************************************************
+
+CODE:
+
+def print_shortest_substrings(s, x):
+    substrings = []
+    min_length = float('inf')
+
+    for i in range(len(s)):
+        for j in range(i + x - 1, len(s)):
+            if s[i] == s[j]:
+                substring = s[i:j + 1]
+                if len(substring) >= x and len(substring) <= min_length:
+                    if len(substring) < min_length:
+                        substrings = [substring]
+                        min_length = len(substring)
+                    else:
+                        substrings.append(substring)
+
+    if substrings:
+        for substring in substrings:
+            print(substring, end=" ")
+        print()
+    else:
+        print("not-found")
+
+# Example usage
+s = "abccdbacca"
+x = 3
+print("x =", x)
+print_shortest_substrings(s, x)
+
+x = 4
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 5
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 6
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 7
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+x = 8
+print("\nx =", x)
+print_shortest_substrings(s, x)
+
+OUTPUT:
+[?2004l
+x = 3
+acca 
+
+x = 4
+acca 
+
+x = 5
+bccdb cdbac 
+
+x = 6
+ccdbac cdbacc 
+
+x = 7
+abccdba ccdbacc 
+
+x = 8
+abccdbacca 
+[?2004h
+
+
+
+ASSIGNMENT 2:
+
+Given a string s, find the ASCII value of each character iteratively. If the ASCII value is even, increment the next character by (ASCII_value % 7). If the ascii value is odd, decrement the previous character by (ASCII_value % 5). Output the newly formed string. 
+Note:
+If a character has already been changed once, do not change that character again. 
+If the new number is an invalid ASCII value, replace it with 83. 
+
+Eg:
+
+s: sHQen}
+ASCII: 115-72-81-101-110-125
+
+First pass (115): No previous character.
+	115-72-81-101-110-125
+Second pass (72): Increment the next character by (72%7)
+	115-72-83-101-110-125
+Third pass(83): Decrement previous character by (83%5)
+	115-69-83-101-110-125
+Fourth pass (101): Previous character already changed once.
+	115-69-83-101-110-125
+Fifth pass(110): Invalid ASCII value.
+	115-69-83-101-110-83
+Sixth pass(83):
+	115-69-83-101-107-83
+
+Final Answer: 
+	115-69-83-101-107-83 => sESekS
+**********************************************************************************
+CODE:
+
+def transform_string(s):
+    result = []
+
+    for i in range(len(s)):
+        ascii_value = ord(s[i])
+
+        if i > 0 and s[i - 1] != '}':
+            if ascii_value % 2 == 0:
+                next_char = chr((ascii_value + (ascii_value % 7)) % 128)
+                result.append(next_char)
+            else:
+                prev_char = chr((ascii_value - (ascii_value % 5) + 128) % 128)
+                result[-1] = prev_char
+        else:
+            result.append(chr(ascii_value))
+
+    transformed_string = ''.join(result)
+    return transformed_string
+
+# Example usage
+s = "sHQen}"
+print("Original String:", s)
+
+passes = s.split('-')
+for i, ascii_value in enumerate(passes):
+    print(f"Pass {i + 1} ({ascii_value}):", transform_string(s))
+    s = transform_string(s)
+
+print("\nFinal Answer:", s)
+
+
+OUTPUT:
+
+[?2004l
+Original String: sHQen}
+Pass 1 (sHQen}): sd}
+
+Final Answer: sd}
+[?2004h
+
+******************************************************************************
+
